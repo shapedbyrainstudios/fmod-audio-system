@@ -17,6 +17,9 @@ public class CharacterController2D : MonoBehaviour
     [Header("Respawn Point")]
     [SerializeField] private Transform respawnPoint;
 
+    [Header("Ground Layer")]
+    [SerializeField] private LayerMask groundLayers;
+
     // components attached to player
     private BoxCollider2D coll;
     private Rigidbody2D rb;
@@ -25,8 +28,8 @@ public class CharacterController2D : MonoBehaviour
     private ParticleSystem deathParticles;
 
     // input parameters for movement
-    Vector2 moveDirection = Vector2.zero;
-    bool jumpPressed = false;
+    private Vector2 moveDirection = Vector2.zero;
+    private bool jumpPressed = false;
 
     // other
     private bool facingRight = true;
@@ -50,6 +53,8 @@ public class CharacterController2D : MonoBehaviour
     {
         if (disableMovement) 
         {
+            rb.velocity = Vector2.zero;
+            UpdateAnimator();
             return;
         }
 
@@ -78,7 +83,7 @@ public class CharacterController2D : MonoBehaviour
         float colliderRadius = coll.size.x * 0.4f * Mathf.Abs(transform.localScale.x);
         Vector3 groundCheckPos = colliderBounds.min + new Vector3(colliderBounds.size.x * 0.5f, colliderRadius * 0.9f, 0);
         // Check if player is grounded
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos, colliderRadius);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckPos, colliderRadius, groundLayers);
         // Check if any of the overlapping colliders are not player collider, if so, set isGrounded to true
         this.isGrounded = false;
         if (colliders.Length > 0)
@@ -179,6 +184,16 @@ public class CharacterController2D : MonoBehaviour
         {
             StartCoroutine(HandleDeath());
         }
+    }
+
+    public void DisableMovement()
+    {
+        disableMovement = true;
+    }
+
+    public void EnableMovement()
+    {
+        disableMovement = false;
     }
 
 }
