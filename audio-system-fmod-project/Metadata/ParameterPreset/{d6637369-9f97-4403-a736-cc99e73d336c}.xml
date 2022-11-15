@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{d6637369-9f97-4403-a736-cc99e73d336c}">
+		<property name="name">
+			<value>area</value>
+		</property>
+		<relationship name="folder">
+			<destination>{41c75853-3875-4f74-8dfa-dab1263f1d2a}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{e11bde59-6b2b-42ef-bcc5-6a250872162d}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{e11bde59-6b2b-42ef-bcc5-6a250872162d}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>GrayArea</value>
+			<value>BlueArea</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

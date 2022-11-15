@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using FMOD.Studio;
 
 // This script is a basic 2D character controller that allows
 // the player to run and jump.
@@ -36,6 +37,9 @@ public class CharacterController2D : MonoBehaviour
     private bool isGrounded = false;
     private bool disableMovement = false;
 
+    // audio
+    private EventInstance playerFootsteps;
+
     private void Awake()
     {
         coll = GetComponent<BoxCollider2D>();
@@ -49,12 +53,18 @@ public class CharacterController2D : MonoBehaviour
         rb.gravityScale = gravityScale;
     }
 
+    private void Start()
+    {
+        playerFootsteps = AudioManager.instance.CreateInstance(FMODEvents.instance.playerFootsteps);
+    }
+
     private void FixedUpdate()
     {
         if (disableMovement) 
         {
             rb.velocity = Vector2.zero;
             UpdateAnimator();
+            UpdateSound();
             return;
         }
 
@@ -69,6 +79,8 @@ public class CharacterController2D : MonoBehaviour
         UpdateFacingDirection();
 
         UpdateAnimator();
+
+        UpdateSound();
     }
 
     private void HandleInput() 
@@ -194,6 +206,26 @@ public class CharacterController2D : MonoBehaviour
     public void EnableMovement()
     {
         disableMovement = false;
+    }
+
+    private void UpdateSound()
+    {
+        // start footsteps event if the player has an x velocity and is on the ground
+        if (rb.velocity.x != 0 && isGrounded)
+        {
+            // get the playback state
+            PLAYBACK_STATE playbackState;
+            playerFootsteps.getPlaybackState(out playbackState);
+            if (playbackState.Equals(PLAYBACK_STATE.STOPPED))
+            {
+                playerFootsteps.start();
+            }
+        }
+        // otherwise, stop the footsteps event
+        else 
+        {
+            playerFootsteps.stop(STOP_MODE.ALLOWFADEOUT);
+        }
     }
 
 }
