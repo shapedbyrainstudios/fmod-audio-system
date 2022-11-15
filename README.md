@@ -6,7 +6,7 @@ The *audio-system-fmod-project* directory is the FMOD project.
 
 The *audio-system-unity-project* is the Unity project.
 
-# Audio File Info
+## Audio Files
 
 Audio files used in this FMOD project are all from FMOD's example project with an exception for the 'Coin Collected' and 'Coin Idle' sounds which I made myself. 
 
